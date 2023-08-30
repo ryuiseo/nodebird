@@ -1,0 +1,17 @@
+{
+  "name": "react-nodebird-front",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cross-env NODE_OPTIONS=--openssl-legacy-provider next -p 3060"
+  },
+  "author": "Jenna",
+  "license": "ISC",
+  "dependencies": {
+    "cross-env": "^7.0.3",
+    "next": "^9.5.5",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0"
+  }
+}
