@@ -7,8 +7,10 @@ const ButtonWrapper = styled.div`
     margin-top: 10px;
 `;
 //태그안에서 직접 스타일을 조절하게 되면 버츄얼 돔이 객체가 바뀌었다고 인식해서 리랜더링 시킴 => 성능상 좋지않음 
-
-const LoginForm =()=>{
+const FormWrapper = styled(Form)`
+    padding: 10px;
+`
+const LoginForm =({setIsLoggedIn})=>{
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
 
@@ -20,8 +22,13 @@ const LoginForm =()=>{
         setPassword(e.target.value)
     },[]);
 
+    const onSubmitForm =useCallback(()=>{
+        console.log(id,password);
+        setIsLoggedIn(true);   
+    },[id, password]);
+
     return (
-        <Form>
+        <FormWrapper onFinish={onSubmitForm}>
             <div>
                 <label htmlFor='user-id'>아이디</label>
                 <br />
@@ -36,7 +43,7 @@ const LoginForm =()=>{
                 <Button type='primary' htmlType='submit' loading={false}>로그인</Button>
                 <Link href='/signup'><a><Button>회원가입</Button></a></Link>
             </ButtonWrapper>
-        </Form>
+        </FormWrapper>
     );
 }
 export default LoginForm;
