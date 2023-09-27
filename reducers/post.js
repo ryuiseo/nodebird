@@ -7,7 +7,7 @@ export const initialState ={
             nickname: 'anne',
         },
         content: '첫번째 게시글 #해시태그',
-        images: [{
+        Images: [{
             src: 'https://unsplash.com/ko/%EC%82%AC%EC%A7%84/6N4bsOvcW3s',
         },{
             src: 'https://unsplash.com/ko/%EC%82%AC%EC%A7%84/G9QPsPvw63g',
