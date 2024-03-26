@@ -5,7 +5,8 @@ import rootSaga from "../sagas";
 import { composeWithDevTools } from "redux-devtools-extension";
 import createSagaMiddleware from "redux-saga";
 
-const configureStore = () => {
+const configureStore = (context) => {
+  console.log(context);
   const sagaMiddleware = createSagaMiddleware();
   const middlewares = [sagaMiddleware];
   const enhancer =
