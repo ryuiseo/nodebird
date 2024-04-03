@@ -3,50 +3,9 @@ import { produce } from "immer";
 import faker from "faker";
 
 export const initialState = {
-  mainPosts: [
-    // {
-    //   id: 1,
-    //   User: {
-    //     id: 1,
-    //     nickname: "anne",
-    //   },
-    //   content: "첫번째 게시글 #해시태그",
-    //   Images: [
-    //     {
-    //       id: shortId.generate(),
-    //       src: "https://images.unsplash.com/photo-1587300003388-59208cc962cb?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    //     },
-    //     {
-    //       id: shortId.generate(),
-    //       src: "https://images.unsplash.com/photo-1588943211346-0908a1fb0b01?q=80&w=2835&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    //     },
-    //     {
-    //       id: shortId.generate(),
-    //       src: "https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?q=80&w=2788&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    //     },
-    //   ],
-    //   Comments: [
-    //     {
-    //       id: shortId.generate(),
-    //       User: {
-    //         id: shortId.generate(),
-    //         nickname: "jenna",
-    //       },
-    //       content: "happy",
-    //     },
-    //     {
-    //       id: shortId.generate(),
-    //       User: {
-    //         id: shortId.generate(),
-    //         nickname: "hero",
-    //       },
-    //       content: "hello",
-    //     },
-    //   ],
-    // },
-  ],
+  mainPosts: [],
   imagePaths: [],
-  hasMorePost: true, //0개일때는 가져오려는 시도를 해야하기 때문에 초기에 true로 둔다.
+  hasMorePosts: true, //0개일때는 가져오려는 시도를 해야하기 때문에 초기에 true로 둔다.
   loadPostsLoading: false,
   loadPostsDone: false,
   loadPostsError: null,
@@ -86,8 +45,6 @@ export const generateDummyPost = (number) =>
         },
       ],
     }));
-
-initialState.mainPosts = initialState.mainPosts.concat(generateDummyPost(10));
 
 export const LOAD_POSTS_REQUEST = "LOAD_POSTS_REQUEST";
 export const LOAD_POSTS_SUCCESS = "LOAD_POSTS_SUCCESS";
@@ -145,7 +102,7 @@ const reducer = (state = initialState, action) => {
         draft.loadPostsLoading = false;
         draft.loadPostsDone = true;
         draft.mainPosts = action.data.concat(draft.mainPosts);
-        draft.hasMorePost = draft.mainPosts.length < 50; //게시글을 50개만 보겠다.
+        draft.hasMorePosts = draft.mainPosts.length < 50; //게시글을 50개만 보겠다.
         break;
       case LOAD_POSTS_FAILURE:
         draft.loadPostsLoading = false;

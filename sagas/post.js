@@ -1,5 +1,12 @@
 import axios from "axios";
-import { delay, put, takeLatest, all, fork } from "redux-saga/effects";
+import {
+  delay,
+  put,
+  takeLatest,
+  all,
+  fork,
+  throttle,
+} from "redux-saga/effects";
 import shortId from "shortid";
 import {
   ADD_POST_SUCCESS,
