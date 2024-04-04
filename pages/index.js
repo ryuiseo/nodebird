@@ -9,7 +9,9 @@ import { useEffect } from "react";
 const Home = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
-  const { mainPosts, hasMorePosts } = useSelector((state) => state.post);
+  const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector(
+    (state) => state.post
+  );
 
   useEffect(() => {
     dispatch({
@@ -23,7 +25,7 @@ const Home = () => {
         window.scrollY + document.documentElement.clientHeight >
         document.documentElement.scrollHeight - 300
       ) {
-        if (hasMorePosts) {
+        if (hasMorePosts && !loadPostsLoading) {
           dispatch({
             type: LOAD_POSTS_REQUEST,
           });
@@ -34,7 +36,7 @@ const Home = () => {
     return () => {
       window.removeEventListener("scroll", onScroll);
     };
-  }, [hasMorePosts]);
+  }, [hasMorePosts, loadPostsLoading]);
 
   return (
     <AppLayout>

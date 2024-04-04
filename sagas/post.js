@@ -123,7 +123,7 @@ function* watchAddPost() {
 }
 
 function* watchLoadPosts() {
-  yield takeLatest(LOAD_POSTS_REQUEST, loadPosts);
+  yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts);
 }
 
 function* watchRemovePost() {
