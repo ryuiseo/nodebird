@@ -15,6 +15,13 @@ router.post("/login", (req, res, next) => {
     if (info) {
       return res.status(401).send(info.reason);
     }
+    return req.login(user, async (loginErr) => {
+      if (loginErr) {
+        console.error(loginErr);
+        return next(loginErr);
+      }
+      return res.status(200).json(user);
+    });
   })(req, res, next);
 });
 
