@@ -57,7 +57,7 @@ const PostCard = ({ post }) => {
             key="more"
             content={
               <Button.Group>
-                {id && post.User.id === id ? (
+                {id && post.User && post.User.id === id ? (
                   <>
                     <Button>수정</Button>
                     <Button
@@ -80,8 +80,8 @@ const PostCard = ({ post }) => {
         extra={id && <FollowButton post={post} />}
       >
         <Card.Meta
-          avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
-          title={post.User.nickname}
+          avatar={<Avatar>{post.User?.nickname[0]}</Avatar>}
+          title={post.User?.nickname}
           description={<PostCardContent postData={post.content} />}
         />
         <Button></Button>
@@ -113,7 +113,7 @@ PostCard.propTypes = {
     id: PropTypes.number,
     User: PropTypes.object,
     content: PropTypes.string,
-    createdAt: PropTypes.object,
+    createdAt: PropTypes.string,
     Comments: PropTypes.arrayOf(PropTypes.object),
     Images: PropTypes.arrayOf(PropTypes.object),
   }).isRequired,
