@@ -19,9 +19,9 @@ export const initialState = {
   signUpLoading: false, //회원가입 시도중
   signUpDone: false,
   signUpError: null,
-  ChangeNicknameLoading: false, //닉네임변경 시도중
-  ChangeNicknameDone: false,
-  ChangeNicknameError: null,
+  changeNicknameLoading: false, //닉네임변경 시도중
+  changeNicknameDone: false,
+  changeNicknameError: null,
   me: null,
   signUpData: {},
   loginData: {},
@@ -57,23 +57,6 @@ export const UNFOLLOW_FAILURE = "UNFOLLOW_FAILURE";
 
 export const ADD_POST_TO_ME = "ADD_POST_TO_ME";
 export const REMOVE_POST_OF_ME = "REMOVE_POST_OF_ME";
-
-// const dummyUser = (data) => ({
-//   ...data,
-//   nickname: "jenna",
-//   id: 1,
-//   Posts: [{ id: "1" }],
-//   Followings: [
-//     { nickname: "cindy" },
-//     { nickname: "anne" },
-//     { nickname: "olivia" },
-//   ],
-//   Followers: [
-//     { nickname: "cindy" },
-//     { nickname: "anne" },
-//     { nickname: "olivia" },
-//   ],
-// });
 
 //action creator
 export const loginRequestAction = (data) => {
@@ -182,6 +165,7 @@ const reducer = (state = initialState, action) => {
         draft.changeNicknameDone = false;
         break;
       case CHANGE_NICKNAME_SUCCESS:
+        draft.me.nickname = action.data.nickname;
         draft.changeNicknameLoading = false;
         draft.changeNicknameDone = true;
         break;
