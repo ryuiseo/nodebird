@@ -1,25 +1,30 @@
-import AppLayout from "../components/AppLayout";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import Head from "next/head";
-import Router from "next/router";
 import { Form, Input, Checkbox, Button } from "antd";
-import useInput from "../hooks/useInput";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { SIGN_UP_REQUEST } from "../reducers/user";
+import Router from "next/router";
+import axios from "axios";
+import { END } from "redux-saga";
+
+import AppLayout from "../components/AppLayout";
+import useInput from "../hooks/useInput";
+import { LOAD_MY_INFO_REQUEST, SIGN_UP_REQUEST } from "../reducers/user";
+import wrapper from "../store/configureStore";
 
 const ErrorMessage = styled.div`
   color: red;
 `;
+
 const Signup = () => {
   const dispatch = useDispatch();
-  const { singUpLoading, signUpDone, signUpError, me } = useSelector(
+  const { signUpLoading, signUpDone, signUpError, me } = useSelector(
     (state) => state.user
   );
 
   useEffect(() => {
-    if (!(me && me.id)) {
-      Router.replace("/"); //replace를 해주면 뒤로가기했을때 그 페이지가 나오지 않게한다.
+    if (me && me.id) {
+      Router.replace("/");
     }
   }, [me && me.id]);
 
@@ -48,6 +53,7 @@ const Signup = () => {
     },
     [password]
   );
+
   const [term, setTerm] = useState("");
   const [termError, setTermError] = useState(false);
   const onChangeTerm = useCallback((e) => {
@@ -128,7 +134,7 @@ const Signup = () => {
           {termError && <ErrorMessage>약관에 동의하셔야 합니다.</ErrorMessage>}
         </div>
         <div style={{ marginTop: 10 }}>
-          <Button type="primary" htmlType="submit" loading={singUpLoading}>
+          <Button type="primary" htmlType="submit" loading={signUpLoading}>
             가입하기
           </Button>
         </div>
@@ -136,4 +142,23 @@ const Signup = () => {
     </AppLayout>
   );
 };
+
+// export const getServerSideProps = wrapper.getServerSideProps(
+//   async (context) => {
+//     console.log("getServerSideProps start");
+//     console.log(context.req.headers);
+//     const cookie = context.req ? context.req.headers.cookie : "";
+//     axios.defaults.headers.Cookie = "";
+//     if (context.req && cookie) {
+//       axios.defaults.headers.Cookie = cookie;
+//     }
+//     context.store.dispatch({
+//       type: LOAD_MY_INFO_REQUEST,
+//     });
+//     context.store.dispatch(END);
+//     console.log("getServerSideProps end");
+//     await context.store.sagaTask.toPromise();
+//   }
+// );
+
 export default Signup;
