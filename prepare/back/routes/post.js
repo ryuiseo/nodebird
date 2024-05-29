@@ -12,13 +12,39 @@ try {
   console.log("uploads 폴더가 없으므로 생성합니다.");
   fs.mkdirSync("uploads");
 }
-
-router.post("/", isLoggedIn, async (req, res, next) => {
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, "uploads");
+    },
+    filename(req, file, done) {
+      //apple.png
+      const ext = path.extname(file.originalname); //확장자 추출 (.png)
+      const basename = path.basename(file.originalname, ext); //apple
+      done(null, basename + "_" + new Date().getTime() + ext); //apple1142543.png
+    },
+  }),
+  limits: { fileSize: 20 * 1024 * 1024 }, //20MB
+});
+router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
   try {
     const post = await Post.create({
       content: req.body.content,
       UserId: req.user.id,
     });
+    if (req.body.image) {
+      if (Array.isArray(req.body.image)) {
+        //이미지를 여러개 올리면, image: [사과.png, 파인애플.png] 배열로 올라감
+        const images = await Promise.all(
+          req.body.image.map((image) => Image.create({ src: image }))
+        ); //한번에 db에 파일주소를 저장한다. 파일자체를 넣으면 db가 무거워지기 때문.
+        await post.addImages(images);
+      } else {
+        //이미지를 하나만 올리면 image: 사과.png
+        const image = await Image.create({ src: req.body.image });
+        await post.addImages(image);
+      }
+    }
     const fullPost = await Post.findOne({
       where: { id: post.id },
       include: [
@@ -53,21 +79,6 @@ router.post("/", isLoggedIn, async (req, res, next) => {
 });
 router.delete("/", (req, res) => {
   res.json({ id: 1 });
-});
-
-const upload = multer({
-  storage: multer.diskStorage({
-    destination(req, file, done) {
-      done(null, "uploads");
-    },
-    filename(req, file, done) {
-      //apple.png
-      const ext = path.extname(file.originalname); //확장자 추출 (.png)
-      const basename = path.basename(file.originalname, ext); //apple
-      done(null, basename + new Date().getTime() + ext); //apple1142543.png
-    },
-  }),
-  limits: { fileSize: 20 * 1024 * 1024 }, //20MB
 });
 
 router.post("/images", isLoggedIn, upload.array("image"), (req, res, next) => {

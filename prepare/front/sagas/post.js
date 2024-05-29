@@ -108,7 +108,7 @@ function* unlikePost(action) {
 }
 
 function addPostAPI(data) {
-  return axios.post("/post", { content: data });
+  return axios.post("/post", data); //formData라서 감싸지 않고 그냥 data로 써줌
 }
 
 function* addPost(action) {
