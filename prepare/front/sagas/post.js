@@ -54,13 +54,13 @@ function* retweet(action) {
     });
   }
 }
-function loadPostsAPI(data) {
-  return axios.get("/posts", data);
+function loadPostsAPI(lastId) {
+  return axios.get(`/posts?lastId=${lastId || 0}`); //get방식은 data를 넣어주려면 쿼리 스트링 방식으로 넣어주어야한다. (데이터 캐싱도 가능)
 }
 
 function* loadPosts(action) {
   try {
-    const result = yield call(loadPostsAPI, action.data);
+    const result = yield call(loadPostsAPI, action.lastId);
     yield put({
       type: LOAD_POSTS_SUCCESS,
       data: result.data,
